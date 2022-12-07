@@ -7,23 +7,23 @@ with open("inputs/day7 - directory structure.txt", 'r') as file:
 
 
 # Class
-class DirectoryTree:
+class Directory:
     def __init__(self, name, parent=None):
         self.name = name
+        self.parent = parent
         self.children = {}
         self.files = {}
-        self.parent = parent
-
-    def create_file(self, size, name):
-        self.files[name] = int(size)
-
-    def create_directory(self, name):
-        return self.children.setdefault(name, DirectoryTree(name, parent=self))
 
     def __iter__(self):
         for child in self.children.values():
             yield child
             yield from child
+
+    def create_file(self, size, name):
+        self.files[name] = int(size)
+
+    def create_directory(self, name):
+        return self.children.setdefault(name, Directory(name, parent=self))
 
     @property
     def root(self):
@@ -39,7 +39,7 @@ class DirectoryTree:
 
 # Main program
 def main(part):
-    cwd = DirectoryTree("/")
+    cwd = Directory("/")
     for line in lines:
         match line.split():
             case ("$", "cd", dir_name):
