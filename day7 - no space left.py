@@ -1,5 +1,4 @@
 # Imports
-from collections import defaultdict
 
 # Read Puzzle input
 with open("inputs/day7 - directory structure.txt", 'r') as file:
@@ -57,6 +56,5 @@ def main(part):
         print(min(children.size for children in cwd.root if 40000000 + children.size > cwd.root.size))
 
 
-# Independent functions
 if __name__ == "__main__":
     main("Part B")
