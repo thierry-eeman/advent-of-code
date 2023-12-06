@@ -4,8 +4,8 @@
 # Path variables
 YEAR = int
 DAY = int
-PUZZLE_TITLE = "trebuchet"
-INPUT_PATH = f"{YEAR}/day {DAY} - {PUZZLE_TITLE}.txt"
+PUZZLE_TITLE = str
+INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 
 
 # Read Puzzle input
