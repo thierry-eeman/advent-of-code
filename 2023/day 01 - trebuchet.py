@@ -3,7 +3,7 @@ import re
 
 # Path variables
 YEAR = 2023
-DAY = 1
+DAY = "01"
 PUZZLE_TITLE = "trebuchet"
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 PART = 'B'

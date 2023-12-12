@@ -3,7 +3,7 @@
 
 # Path variables
 YEAR = 2023
-DAY = 9
+DAY = "09"
 PUZZLE_TITLE = "miragemaintenance"
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 
