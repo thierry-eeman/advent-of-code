@@ -21,12 +21,13 @@ S is the starting position of the animal; there is a pipe on this tile, but your
 Based on the acoustics of the animal's scurrying, you're confident the pipe that contains the animal is one large, continuous loop.
 
 For example, here is a square loop of pipe:
-
+```
 .....
 .F-7.
 .|.|.
 .L-J.
 .....
+```
 
 If the animal had entered this loop in the northwest corner, the sketch would instead look like this:
 
