@@ -60,7 +60,6 @@ def map_information(data):
                     part.number = int(number)
                     engine.part_dict[f'Part {part_number}'] = part.create_part()
                     adjacent_items = create_adjacent_list(symbols, engine.part_dict[f'Part {part_number}']['x'], y)
-                    
                     print(f"{engine.part_dict[f'Part {part_number}']} - {adjacent_items}")
                     part_number += 1
                     start = True
