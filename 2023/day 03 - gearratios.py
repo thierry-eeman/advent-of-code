@@ -60,6 +60,7 @@ def map_information(data):
                     part.number = int(number)
                     engine.part_dict[f'Part {part_number}'] = part.create_part()
                     adjacent_items = create_adjacent_list(symbols, engine.part_dict[f'Part {part_number}']['x'], y)
+                    
                     print(f"{engine.part_dict[f'Part {part_number}']} - {adjacent_items}")
                     part_number += 1
                     start = True
@@ -78,10 +79,16 @@ def map_information(data):
 def create_adjacent_list(symbol_list, x_list, y):
     adjacent_list = []
     if y > 0:
-        row_above = symbol_list[y-1][x_list[0]-1:x_list[-1]+2]
+        if x_list[0] == 0:
+            row_above = symbol_list[y-1][x_list[0]:x_list[-1]+2]
+        else:
+            row_above = symbol_list[y-1][x_list[0]-1:x_list[-1]+2]
         adjacent_list.append(row_above)
     if y < 139:
-        row_below = symbol_list[y+1][x_list[0]-1:x_list[-1]+2]
+        if x_list[0] == 0:
+            row_below = symbol_list[y+1][x_list[0]:x_list[-1]+2]
+        else:
+            row_below = symbol_list[y+1][x_list[0]-1:x_list[-1]+2]
         adjacent_list.append(row_below)
     if x_list[0] > 0:
         left = symbol_list[y][x_list[0]-1]
