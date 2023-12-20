@@ -112,9 +112,7 @@ def add_engine_part(part:Part, engine:Engine, part_number, number:int, symbols:l
 # Main function
 def main():
     engine_parts, symbol_list = map_information(data)
-    # print(engine_parts)
     part_values = []
-    sum_of_parts = 0
     for k,v in engine_parts.items():
         print(v)
         if len(v["Unique"]) > 1:
