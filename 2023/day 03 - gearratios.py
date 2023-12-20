@@ -7,14 +7,13 @@ DAY = "03"
 PUZZLE_TITLE = 'gearratios'
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 
+# Variables
+SYMBOL_OPTIONS = ["*"]
 
 # Read Puzzle input
 with open(INPUT_PATH, 'r') as file:
     data = [i.strip() for i in file.readlines()]
     symbols = [[*i] for i in data]
-
-# Variables
-
 
 # Class
 class Engine:
@@ -59,7 +58,6 @@ def map_information(data):
                     part.y = y
                     number = character
                     start = False
-                data[y] = data[y][:x] + "N" + data[y][x+1:]
             elif character == '.':
                 if not start:
                     add_engine_part(part, engine, part_number, number, symbols, y)
@@ -70,7 +68,8 @@ def map_information(data):
                     add_engine_part(part, engine, part_number, number, symbols, y)
                     part_number += 1
                     start = True
-                engine.symbol_dict[f"Symbol {symbol_number}"] = {'symbol': character, 'x': x, 'y': y}
+                if character in SYMBOL_OPTIONS:
+                    engine.symbol_dict[f"Symbol {symbol_number}"] = {'symbol': character, 'x': x, 'y': y}
                 symbol_number += 1
     return engine.part_dict, engine.symbol_dict
 
@@ -108,30 +107,29 @@ def add_engine_part(part:Part, engine:Engine, part_number, number:int, symbols:l
     engine.part_dict[f'Part {part_number}']["Adjacent"] = adjacent_items
     engine.part_dict[f'Part {part_number}']["Unique"] = unique_symbols(adjacent_items)
 
-
-# Main function
+# Main Function
 def main():
     engine_parts, symbol_list = map_information(data)
-    part_values = []
+    
     for k,v in engine_parts.items():
-        print(v)
         if len(v["Unique"]) > 1:
             engine_parts[k]["Engine_Part"] = True
         else: 
             engine_parts[k]["Engine_Part"] = False
-    print(engine_parts)
-            
+    
+    part_values = []
+                
     for k,v in engine_parts.items():
         if v["Engine_Part"]:
             part_values.append(v["part"])
     
     print(f"Total sum of all parts: {sum(part_values)}")
-    print(part_values)
-    with open("part_list.json", 'w') as output:
-        json.dump(engine_parts, output)
-        print(data)
+    # Print statements for more in depth information
+    print(symbol_list)
+    # with open("part_list.json", 'w') as output:
+    #     json.dump(engine_parts, output)
+    #     print(data)
                 
-
 # Main program
 if __name__ == "__main__":
     main()
