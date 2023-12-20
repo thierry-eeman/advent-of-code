@@ -1,5 +1,5 @@
 # Imports
-
+import json
 
 # Path variables
 YEAR = 2023
@@ -12,7 +12,6 @@ INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 with open(INPUT_PATH, 'r') as file:
     data = [i.strip() for i in file.readlines()]
     symbols = [[*i] for i in data]
-    # print(symbols)
 
 # Variables
 
@@ -33,7 +32,7 @@ class Part:
         return {
             'part': self.number,
             'x': [self.x+i for i in range(len(str(self.number)))],
-            'y': self.y
+            'y': self.y,
             }
 
 # Helper functions
@@ -44,31 +43,31 @@ def map_information(data):
     for y, line in enumerate(data):
         start = True
         number = ''
-        sybmol = ''
+        symbol = ''
         for x, character in enumerate(line):
+            if x == 0:
+                start = True
             if character.isdigit():
                 if not start:
                     number += character
+                    if x == 139:
+                        add_engine_part(part, engine, part_number, number, symbols, y)
+                        part_number += 1
                 if start:
                     part = Part()
                     part.x = x
                     part.y = y
                     number = character
                     start = False
+                data[y] = data[y][:x] + "N" + data[y][x+1:]
             elif character == '.':
                 if not start:
-                    part.number = int(number)
-                    engine.part_dict[f'Part {part_number}'] = part.create_part()
-                    adjacent_items = create_adjacent_list(symbols, engine.part_dict[f'Part {part_number}']['x'], y)
-                    print(f"{engine.part_dict[f'Part {part_number}']} - {adjacent_items}")
+                    add_engine_part(part, engine, part_number, number, symbols, y)
                     part_number += 1
                     start = True
             else:
                 if not start:
-                    part.number = int(number)
-                    engine.part_dict[f'Part {part_number}'] = part.create_part()
-                    adjacent_items = create_adjacent_list(symbols, engine.part_dict[f'Part {part_number}']['x'], y)
-                    print(f"{engine.part_dict[f'Part {part_number}']} - {adjacent_items}")
+                    add_engine_part(part, engine, part_number, number, symbols, y)
                     part_number += 1
                     start = True
                 engine.symbol_dict[f"Symbol {symbol_number}"] = {'symbol': character, 'x': x, 'y': y}
@@ -97,20 +96,42 @@ def create_adjacent_list(symbol_list, x_list, y):
         adjacent_list.append(right)
     return adjacent_list
 
+def unique_symbols(symbol_list):
+    flattened_list = [item for sublist in symbol_list for item in sublist]
+    unique_list = list(set(flattened_list))
+    return unique_list
+
+def add_engine_part(part:Part, engine:Engine, part_number, number:int, symbols:list, y:int):
+    part.number = int(number)
+    engine.part_dict[f'Part {part_number}'] = part.create_part()
+    adjacent_items = create_adjacent_list(symbols, engine.part_dict[f'Part {part_number}']['x'], y)
+    engine.part_dict[f'Part {part_number}']["Adjacent"] = adjacent_items
+    engine.part_dict[f'Part {part_number}']["Unique"] = unique_symbols(adjacent_items)
+
+
 # Main function
 def main():
     engine_parts, symbol_list = map_information(data)
     # print(engine_parts)
-    # print(symbol_list)
-    for ydex, y in enumerate(symbols):
-        for xdex, x in enumerate(y):
-            if not x.isdigit() and x != '.':
-                square = symbols[ydex-1][xdex-1:xdex+2] + symbols[ydex][xdex-1:xdex+2] + symbols[ydex+1][xdex-1:xdex+2]
-                digit_present = True in (ele.isdigit() for ele in square)
-                if digit_present:
-                    pass
-                    # print(ydex, xdex, x)
-                    # print(square)
+    part_values = []
+    sum_of_parts = 0
+    for k,v in engine_parts.items():
+        print(v)
+        if len(v["Unique"]) > 1:
+            engine_parts[k]["Engine_Part"] = True
+        else: 
+            engine_parts[k]["Engine_Part"] = False
+    print(engine_parts)
+            
+    for k,v in engine_parts.items():
+        if v["Engine_Part"]:
+            part_values.append(v["part"])
+    
+    print(f"Total sum of all parts: {sum(part_values)}")
+    print(part_values)
+    with open("part_list.json", 'w') as output:
+        json.dump(engine_parts, output)
+        print(data)
                 
 
 # Main program
