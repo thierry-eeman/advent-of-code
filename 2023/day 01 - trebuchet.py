@@ -1,12 +1,13 @@
 # Imports
 import re
+import os
 
 # Path variables
 YEAR = 2023
 DAY = "01"
 PUZZLE_TITLE = "trebuchet"
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
-PART = 'B'
+PART = os.getenv("PART")
 
 # Read Puzzle input
 with open(INPUT_PATH, 'r') as file:
