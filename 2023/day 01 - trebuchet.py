@@ -1,13 +1,17 @@
 # Imports
 import re
 import os
+from dotenv import load_dotenv
+from pathlib import Path
 
 # Path variables
+dotenv_path = Path('./.env')
+load_dotenv(dotenv_path=dotenv_path)
 YEAR = 2023
 DAY = "01"
 PUZZLE_TITLE = "trebuchet"
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
-PART = os.getenv("PART")
+PART = os.environ.get("PART", "A")
 
 # Read Puzzle input
 with open(INPUT_PATH, 'r') as file:
@@ -95,3 +99,4 @@ def main():
 # Main program
 if __name__ == "__main__":
     main()
+    print(PART)
