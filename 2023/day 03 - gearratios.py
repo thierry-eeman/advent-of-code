@@ -1,5 +1,7 @@
 # Imports
 import json
+import re
+from functools import reduce
 
 # Path variables
 YEAR = 2023
@@ -9,10 +11,13 @@ INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 
 # Variables
 SYMBOL_OPTIONS = ["*"]
+REGEX_GEAR = r'\*'
+REGEX_NUMBERS = r'\d+'
 
 # Read Puzzle input
 with open(INPUT_PATH, 'r') as file:
     data = [i.strip() for i in file.readlines()]
+    print(data)
     symbols = [[*i] for i in data]
 
 # Class
@@ -33,6 +38,15 @@ class Part:
             'x': [self.x+i for i in range(len(str(self.number)))],
             'y': self.y,
             }
+
+class Gear:
+    def __init__(self) -> None:
+        self.teeth = []
+        self.x = int
+        self.y = int
+    
+    def ratio(self):
+        return reduce((lambda x, y: x * y), self.teeth) if len(self.teeth) == 2 else 0
 
 # Helper functions
 def map_information(data):
@@ -107,6 +121,30 @@ def add_engine_part(part:Part, engine:Engine, part_number, number:int, symbols:l
     engine.part_dict[f'Part {part_number}']["Adjacent"] = adjacent_items
     engine.part_dict[f'Part {part_number}']["Unique"] = unique_symbols(adjacent_items)
 
+def find_possible_gears(input_data):
+    gears = dict()
+    for row, line in enumerate(input_data):
+        for symbol in re.finditer(REGEX_GEAR, line):
+            gears[(row, symbol.start())] = []
+    
+    for index, line in enumerate(input_data):
+        for number in re.finditer(REGEX_NUMBERS, line):
+            for row in range(index-1, index+2):
+                for column in range(number.start()-1, number.end()+1):
+                    if (row, column) in gears:
+                        gears[(row, column)].append(int(number.group()))
+    return gears
+
+def calculate_gear_ratios(gear_dict):
+    gear_ratio_sum = 0
+    for nums in gear_dict.values():
+        gear = Gear()
+        gear.teeth = nums
+        ratio = gear.ratio()
+        print(ratio)
+        gear_ratio_sum += ratio
+    return gear_ratio_sum
+
 # Main Function
 def main():
     engine_parts, symbol_list = map_information(data)
@@ -125,10 +163,12 @@ def main():
     
     print(f"Total sum of all parts: {sum(part_values)}")
     # Print statements for more in depth information
-    print(symbol_list)
-    # with open("part_list.json", 'w') as output:
-    #     json.dump(engine_parts, output)
-    #     print(data)
+    # print(engine_parts)
+    
+    gears = find_possible_gears(data)
+    print(gears)
+    ratios = calculate_gear_ratios(gears)
+    print(ratios)
                 
 # Main program
 if __name__ == "__main__":
