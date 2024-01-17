@@ -12,7 +12,7 @@ INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 # Read Puzzle input
 with open(INPUT_PATH, 'r') as file:
     data = [line.strip() for line in file.readlines()]
-    print(data)
+    # print(data)
 
 # Variables
 NUMBER_REGEX = r'\d+'
@@ -69,7 +69,7 @@ def main():
         for i in range(1, card_details.overlap+1):
             card_to_update = scratch_cards[f"Card {card_details.id+i}"]
             card_to_update.instance += 1*card_details.instance
-            print(card_to_update.id, card_to_update.instance)
+            # print(card_to_update.id, card_to_update.instance)
     
     total_amount_of_cards = 0
     for card_details in scratch_cards.values():
