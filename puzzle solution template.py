@@ -7,7 +7,7 @@ from pathlib import Path
 dotenv_path = Path('./.env')
 load_dotenv(dotenv_path=dotenv_path)
 YEAR = int
-DAY = int
+DAY = str
 PUZZLE_TITLE = str
 INPUT_PATH = f"./{YEAR}/inputs/day {DAY} - {PUZZLE_TITLE}.txt"
 PART = os.environ.get("PART", "A")
